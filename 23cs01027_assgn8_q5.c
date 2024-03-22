@@ -1,101 +1,56 @@
 #include <stdio.h>
-void funcodd(int rows, int cols, int n, int (*mat)[cols], int (*mat2)[rows])
-{
-    if (n == 3)
-    {
-        for (int i = 0; i < cols; i++)
-        {
-            for (int j = rows - 1; j >= 0; j--)
-            {
-                *(*(mat2 + i) + rows - 1 - j) = *(*(mat + i) + j);
-            }
-        }
-    }
-    else if (n == 1)
-    {
-        for (int i = 0; i < cols; i++)
-        {
-            for (int j = rows - 1; j >= 0; j--)
-            {
-                *(*(mat2 + i) + rows - 1 - j) = *(*(mat + j) + i);
-            }
+
+void take_mat(int col, int mat[][col], int row){
+    printf("Enter matrix: \n"); 
+    for (int i=0; i<row; i++){
+        for (int j=0; j<col; j++){
+            scanf("%d", &mat[i][j]);
         }
     }
 }
-void funceven(int rows, int cols, int n, int (*mat)[cols], int (*mat2)[cols])
-{
-    if (n == 0)
-    {
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                *(*(mat2 + i) + j) = *(*(mat + i) + j);
+
+
+void rotate(int col, int mat[][col], int row, int rot){
+    int n = rot%4;
+    switch(n){
+        case 0:
+            break;
+        case 1:
+            for (int j=0; j<col; j++){
+                for(int i=row-1; i>=0; i--)
+                {
+                    printf("%d ", *(*(mat +i)+j));    
+                }
+                printf("\n");
             }
-        }
-    }
-    else if (n == 2)
-    {
-        for (int i = rows - 1; i >= 0; i--)
-        {
-            for (int j = cols - 1; j >= 0; j--)
-            {
-                *(*(mat2 + rows - 1 - i) + cols - 1 - j) = *(*(mat + i) + j);
+            break;
+        case 2:
+            for(int i=row-1; i>=0; i--){
+                for (int j=col-1; j>=0; j--){
+                    printf("%d ", *(*(mat +i)+j));
+                }
+                printf("\n");
             }
-        }
+            break;  
+        case 3:
+            for (int j=col-1; j>=0; j--){
+                for(int i=0; i<row; i++){
+                    printf("%d ", *(*(mat +i)+j));
+                }
+                printf("\n");
+            }
+            break;
     }
 }
-int main()
-{
-    int rows, cols;
-    printf("Enter rows and cols of the matrix : ");
-    scanf("%d", &rows);
-    scanf("%d", &cols);
-    int mat[rows][cols];
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            scanf("%d", &*(*(mat + i) + j));
-        }
-    }
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            printf("%d ", *(*(mat + i) + j));
-        }
-        printf("\n");
-    }
-    int n;
-    printf("Enter how many times you want to rotate the matrix : ");
-    scanf("%d", &n);
-    if (n % 2 == 0)
-    {
-    
-        int mat2[rows][cols];
-        funceven(rows, cols, n%4, mat, mat2);
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                printf("%d ", *(*(mat2 + i) + j));
-            }
-            printf("\n");
-        }
-    }
-    else
-    {
-        int mat2[cols][rows];
-        funcodd(rows, cols, n%4, mat, mat2);
-        for (int i = 0; i < cols; i++)
-        {
-            for (int j = 0; j < rows; j++)
-            {
-                printf("%d ", *(*(mat2 + i) + j));
-            }
-            printf("\n");
-        }
-    }
+
+int main(){
+    int row, col, rot;
+    printf("Enter dimensions for matrix: ");
+    scanf("%d %d", &row, &col);
+    int mat[row][col];
+    take_mat(col, mat, row);
+    printf("No. of rotations: ");
+    scanf("%d", &rot);
+    rotate(col, mat, row, rot);
     return 0;
 }
